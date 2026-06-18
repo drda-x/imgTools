@@ -51,26 +51,26 @@
 
       <!-- 待上传文件列表 -->
       <div v-if="pendingFiles.length" class="file-list">
-        <div
-          v-for="(file, index) in pendingFiles"
-          :key="index"
-          class="file-item fade-in"
-        >
-          <el-thumbnail :src="file.preview" :alt="file.name" class="file-thumb" />
-          <div class="file-info">
-            <p class="file-name">{{ file.name }}</p>
-            <p class="file-size">{{ formatFileSize(file.size) }}</p>
-          </div>
-          <el-button
-            v-if="!file.uploading"
-            type="danger"
-            text
-            @click="removePendingFile(index)"
+          <div
+            v-for="(item, index) in pendingFiles"
+            :key="index"
+            class="file-item fade-in"
           >
-            <el-icon><Close /></el-icon>
-          </el-button>
-          <el-icon v-else-if="file.uploading" class="loading-icon"><Loading /></el-icon>
-        </div>
+            <el-thumbnail :src="item.preview" :alt="item.file.name" class="file-thumb" />
+            <div class="file-info">
+              <p class="file-name">{{ item.file.name }}</p>
+              <p class="file-size">{{ formatFileSize(item.file.size) }}</p>
+            </div>
+            <el-button
+              v-if="!item.uploading"
+              type="danger"
+              text
+              @click="removePendingFile(index)"
+            >
+              <el-icon><Close /></el-icon>
+            </el-button>
+            <el-icon v-else-if="item.uploading" class="loading-icon"><Loading /></el-icon>
+          </div>
       </div>
 
       <!-- 错误提示 -->

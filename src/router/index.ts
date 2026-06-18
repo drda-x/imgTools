@@ -34,7 +34,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   // 加载本地保存的配置并在未配置时重定向到设置页
   const settingsStore = useSettingsStore()
   settingsStore.loadSettings()

@@ -187,7 +187,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { useSettingsStore, useImageStore, type ImageItem } from '@/stores'
 import { generateLink } from '@/utils/links'
 import { deleteFromGitHub } from '@/utils/github'

@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Picture, Upload, Grid, Setting, Menu } from '@element-plus/icons-vue'
 
@@ -88,7 +88,6 @@ function toggleSidebar() {
 }
 
 // 当 route 变化时，同步 activeMenu，并在移动端关闭侧栏
-import { watch } from 'vue'
 watch(
   () => route.path,
   (p) => {
@@ -98,7 +97,7 @@ watch(
 )
 
 // 当 activeMenu 改变（例如通过顶部单选按钮），导航到相应路由
-watch(activeMenu, (val, oldVal) => {
+watch(activeMenu, (val) => {
   if (val && val !== route.path) {
     router.push(val).catch(() => {})
     if (isMobile.value) showSidebar.value = false

@@ -40,7 +40,7 @@ export async function uploadToGitHub(
   const base64 = await fileToBase64(file)
 
   try {
-    const response = await api.put(
+    await api.put(
     `/repos/${config.owner}/${config.repo}/contents/${encodedPath}`,
     {
       message: `Upload image: ${file.name}`,
@@ -92,7 +92,7 @@ export async function uploadToGitHub(
 /**
  * 获取仓库中的图片列表（简化版，从 localStorage 获取）
  */
-export async function getImagesFromRepo(config: GitHubConfig): Promise<ImageItem[]> {
+export async function getImagesFromRepo(_config: GitHubConfig): Promise<ImageItem[]> {
   // 注意：GitHub API 没有直接的目录浏览 API
   // 实际项目中可以使用 Git Tree API 或其他方法
   return []

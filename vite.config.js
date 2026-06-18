@@ -1,7 +1,6 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
-
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 export default defineConfig({
     plugins: [vue()],
     resolve: {
@@ -12,7 +11,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             less: {
-                additionalData: `@import './src/styles/variables.less';`,
+                additionalData: "@import './src/styles/variables.less';",
             },
         },
     },
@@ -24,7 +23,7 @@ export default defineConfig({
             '/github': {
                 target: 'https://api.github.com',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/github/, '')
+                rewrite: function (path) { return path.replace(/^\/github/, ''); }
             }
         },
     },
@@ -32,5 +31,5 @@ export default defineConfig({
         outDir: 'dist',
         sourcemap: false,
     },
-    base: './',   // 加这一行
-})
+    base: './', // 加这一行
+});
