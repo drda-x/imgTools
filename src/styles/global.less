@@ -97,3 +97,29 @@ input, textarea {
 .fade-in {
   animation: fadeIn @transition-normal ease-out;
 }
+
+/* 全局移动端增强样式 */
+@media (max-width: 768px) {
+  .main-content {
+    padding: @spacing-md;
+  }
+
+  .drop-zone {
+    padding: @spacing-lg;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .select-btn {
+    width: 100%;
+    display: block;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .aside.show {
+    transform: translateX(0) !important;
+  }
+}

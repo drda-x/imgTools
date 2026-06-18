@@ -2,7 +2,7 @@
   <div class="layout">
     <el-container>
       <!-- 侧边栏导航 -->
-      <el-aside class="aside" :width="isMobile ? '0' : '200px'">
+      <el-aside class="aside" :class="{ show: isMobile && showSidebar }" :width="isMobile ? '0' : '200px'">
         <div class="logo">
           <el-icon :size="28"><Picture /></el-icon>
           <span>ImgTools</span>
@@ -70,10 +70,14 @@ import { useRoute } from 'vue-router'
 import { Picture, Upload, Grid, Setting, Menu } from '@element-plus/icons-vue'
 
 const route = useRoute()
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 const isMobile = ref(false)
 const showSidebar = ref(false)
 
-const activeMenu = computed(() => route.path)
+// 使用可读写的 activeMenu，以便顶部的单选按钮能够改变路由
+const activeMenu = ref(route.path)
 
 function checkMobile() {
   isMobile.value = window.innerWidth <= 768
@@ -82,6 +86,24 @@ function checkMobile() {
 function toggleSidebar() {
   showSidebar.value = !showSidebar.value
 }
+
+// 当 route 变化时，同步 activeMenu，并在移动端关闭侧栏
+import { watch } from 'vue'
+watch(
+  () => route.path,
+  (p) => {
+    activeMenu.value = p
+    if (isMobile.value) showSidebar.value = false
+  }
+)
+
+// 当 activeMenu 改变（例如通过顶部单选按钮），导航到相应路由
+watch(activeMenu, (val, oldVal) => {
+  if (val && val !== route.path) {
+    router.push(val).catch(() => {})
+    if (isMobile.value) showSidebar.value = false
+  }
+})
 
 onMounted(() => {
   checkMobile()
@@ -101,6 +123,8 @@ onUnmounted(() => {
 .aside {
   background: @bg-card;
   box-shadow: @shadow-sm;
+  min-height: 100vh;
+
   transition: transform @transition-normal;
 
   .logo {

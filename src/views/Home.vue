@@ -13,7 +13,7 @@
         @dragover.prevent="isDragging = true"
         @dragleave.prevent="isDragging = false"
         @drop.prevent="handleDrop"
-        @click.stop
+        @click="triggerFileSelect"
       >
         <input
           ref="fileInput"
@@ -168,7 +168,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useSettingsStore, useImageStore, type ImageItem } from '@/stores'
-import { uploadToGitHub, generateLink } from '@/utils/api'
+import { uploadToGitHub } from '@/utils/github'
+import { generateLink } from '@/utils/links'
 import {
   UploadFilled,
   Plus,

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/default.vue'
+import { useSettingsStore } from '@/stores'
 
 const routes = [
   {
@@ -34,7 +35,21 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} - ImgTools`
+  // 加载本地保存的配置并在未配置时重定向到设置页
+  const settingsStore = useSettingsStore()
+  settingsStore.loadSettings()
+
+  document.title = `${to.meta.title || 'ImgTools'} - ImgTools`
+
+  const cfg = settingsStore.config
+  const needConfig = !cfg.token || !cfg.owner || !cfg.repo
+
+  if (needConfig && to.path !== '/settings') {
+    // 跳转并携带原始目标，保存用户上下文
+    next({ path: '/settings', query: { redirect: to.fullPath } })
+    return
+  }
+
   next()
 })
 

@@ -189,7 +189,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useSettingsStore, useImageStore, type ImageItem } from '@/stores'
-import { generateLink, deleteFromGitHub } from '@/utils/api'
+import { generateLink } from '@/utils/links'
+import { deleteFromGitHub } from '@/utils/github'
 import { Search, Grid, List, CopyDocument, Delete, Picture } from '@element-plus/icons-vue'
 
 const settingsStore = useSettingsStore()

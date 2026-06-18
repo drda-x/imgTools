@@ -8,8 +8,8 @@
     <el-card class="settings-card" shadow="hover">
       <el-form
         :model="form"
-        label-width="140px"
-        label-position="right"
+        :label-width="labelWidth"
+        :label-position="labelPosition"
       >
         <el-form-item label="Personal Token">
           <el-input
@@ -100,12 +100,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useSettingsStore, type GitHubConfig } from '@/stores'
 import { Check, RefreshLeft } from '@element-plus/icons-vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const settingsStore = useSettingsStore()
+const router = useRouter()
+const route = useRoute()
 
 const form = ref<GitHubConfig>({
   token: '',
@@ -117,6 +120,20 @@ const form = ref<GitHubConfig>({
 })
 
 const defaultForm = { ...form.value }
+const isMobile = ref(false)
+const labelPosition = ref<'right' | 'top'>('right')
+const labelWidth = ref('140px')
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+  if (isMobile.value) {
+    labelPosition.value = 'top'
+    labelWidth.value = '100%'
+  } else {
+    labelPosition.value = 'right'
+    labelWidth.value = '140px'
+  }
+}
 
 function saveSettings() {
   if (!form.value.token || !form.value.owner || !form.value.repo) {
@@ -127,6 +144,12 @@ function saveSettings() {
   settingsStore.config = { ...form.value }
   settingsStore.saveSettings()
   ElMessage.success('设置已保存')
+
+  // 如果有 redirect 参数，保存后跳回原来的页面
+  const redirect = route.query.redirect as string | undefined
+  if (redirect) {
+    router.replace(redirect)
+  }
 }
 
 function resetSettings() {
@@ -137,6 +160,12 @@ function resetSettings() {
 onMounted(() => {
   settingsStore.loadSettings()
   form.value = { ...settingsStore.config }
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
 })
 </script>
 

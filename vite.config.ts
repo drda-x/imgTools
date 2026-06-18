@@ -19,6 +19,14 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      // 在开发时将 /github 前缀代理到 GitHub API，避免浏览器 CORS 问题
+      '/github': {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/github/, '')
+      }
+    },
   },
   build: {
     outDir: 'dist',
